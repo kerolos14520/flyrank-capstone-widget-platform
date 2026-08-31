@@ -4,8 +4,10 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
 from app.api.v1.submissions import router as submissions_router
+from app.api.v1.widgets import router as widgets_router
 from app.core.database import engine, Base
 from app.core.limiter import limiter
+import app.models.widget  # Ensure Widget table model is registered
 
 app = FastAPI(
     title="Embeddable Widget Platform API",
@@ -13,7 +15,6 @@ app = FastAPI(
     description="Backend engine for widget configuration and submission processing."
 )
 
-# Set rate limiter state and exception handler
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
@@ -31,6 +32,7 @@ app.add_middleware(
 )
 
 app.include_router(submissions_router)
+app.include_router(widgets_router)
 
 @app.get("/health", tags=["Health Check"])
 def health_check():
