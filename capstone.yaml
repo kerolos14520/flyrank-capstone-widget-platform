@@ -1,0 +1,9 @@
+version: "1.0"
+run: "docker compose up"
+seed: "python3 scripts/seed.py"
+test: "pytest"
+base_url: "http://localhost:8000"
+endpoints:
+  config: "GET /api/v1/widgets/:id/config"
+  submit: "POST /api/v1/submissions"
+  dashboard: "GET /api/v1/dashboard/stats"
